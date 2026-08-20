@@ -47,7 +47,7 @@ export class AuthService {
     });
 
     if (emailTaken) {
-      throw new ConflictException('This is email is already in user.');
+      throw new ConflictException('This is email is already in use.');
     }
 
     const hashedPassword = await hash(password, 10);
