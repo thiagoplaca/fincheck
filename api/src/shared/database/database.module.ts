@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 import { UsersRepository } from './repositories/users.repositories';
 import { CategoriesRepository } from './repositories/categories.repositories';
 import { BankAccountsRepository } from './repositories/bank-accounts.repositories';
-import { TransactionsRepository } from './repositories/transactions.repositories';
+import { TransactionsRepository } from './repositories/transactions.repository';
 
 @Global()
 @Module({

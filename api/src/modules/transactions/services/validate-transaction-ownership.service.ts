@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { TransactionsRepository } from 'src/shared/database/repositories/transactions.repositories';
+import { TransactionsRepository } from 'src/shared/database/repositories/transactions.repository';
+
 @Injectable()
 export class ValidateTransactionOwnershipService {
   constructor(private readonly transactionsRepo: TransactionsRepository) {}
