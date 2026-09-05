@@ -1,10 +1,11 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, type Ref } from "react";
 
 interface InputProps extends ComponentProps<"input"> {
   name: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
-export function Input({ placeholder, name, id, ...props }: InputProps) {
+export function Input({ placeholder, name, id, ref, ...props }: InputProps) {
   const inputId = id ?? name;
   return (
     <div className="relative">
@@ -12,6 +13,7 @@ export function Input({ placeholder, name, id, ...props }: InputProps) {
         {...props}
         name={name}
         id={inputId}
+        ref={ref}
         className="w-full bg-white rounded-lg border border-gray-500 h-[52px] px-3 pt-4 text-gray-800 peer placeholder-shown:pt-0  focus:border-gray-800 transition-all duration-150 outline-none"
         placeholder=" "
       />
