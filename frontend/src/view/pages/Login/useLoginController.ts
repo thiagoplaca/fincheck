@@ -5,6 +5,7 @@ import { authService } from "../../../app/services/authService";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { SigninParams } from "../../../app/services/authService/signin";
+import { useAuth } from "../../../app/hooks/useAuth";
 
 const schema = z.object({
   email: z.email("Informe um e-mail válido.").nonempty("E-mail é obrigatório."),
@@ -30,9 +31,14 @@ export function useLoginController() {
       return authService.signin(data);
     },
   });
+
+  const { signin } = useAuth();
+
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      const { accessToken } = await mutateAsync(data);
+
+      signin(accessToken);
     } catch {
       toast.error("Occoreu um erro ao entrar na sua conta.");
     }
