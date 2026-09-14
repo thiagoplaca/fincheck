@@ -25,7 +25,9 @@ function DropdownMenuContent({
     <RxdDropdownMenu.Portal>
       <RxdDropdownMenu.Content
         className={cn(
-          "rounded-2xl p-2 bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] data-[side=bottom]:animate-slide-up-and-fade",
+          "rounded-2xl p-2 bg-white space-y-2 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] z-50",
+          "data-[side=bottom]:animate-slideUpAndFade",
+          "data-[side=top]:animate-slideDownAndFade",
           className,
         )}
       >
@@ -50,7 +52,7 @@ function DropdownMenuItem({
     <RxdDropdownMenu.Item
       onSelect={onSelect}
       className={cn(
-        "min-h-8 outline-none flex items-center p-4 text-gray-800 text-sm rounded-2xl transition-colors cursor-pointer data-highlighted:bg-gray-50",
+        "min-h-6 outline-none flex items-center px-4 py-2 text-gray-800 text-sm rounded-2xl transition-colors cursor-pointer data-highlighted:bg-gray-50",
         className,
       )}
     >

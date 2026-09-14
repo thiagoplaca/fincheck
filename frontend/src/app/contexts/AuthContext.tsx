@@ -3,7 +3,7 @@ import { localStorageKeys } from "../config/localStorageKeys";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { usersService } from "../services/usersService";
 import toast from "react-hot-toast";
-import { PageLoader } from "../../view/components/PageLoader";
+import { PageLoader } from "../../view/components/PageLoader.tsx";
 
 interface AuthContextValue {
   signedIn: boolean;
