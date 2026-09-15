@@ -18,6 +18,7 @@ export function Button({
       disabled={disabled || isPending}
       className={cn(
         "bg-teal-900 hover:bg-teal-800 disabled:bg-transparent px-6 h-12 rounded-2xl font-medium text-white disabled:text-gray-400 disabled:cursor-not-allowed cursor-pointer transition-all flex items-center justify-center",
+        className,
       )}
     >
       {!isPending && <span>{children}</span>}
