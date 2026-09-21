@@ -20,14 +20,10 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
       selected={value}
       onSelect={(date) => onChange?.(date ?? new Date())}
       classNames={{
-        button_previous:
-          "text-teal-800 flex items-center justify-center !bg-transparent",
-        button_next:
-          "text-teal-800 flex items-center justify-center !bg-transparent",
         weekday: "uppercase text-xs text-gray-500 font-medium pt-1 pb-2",
         day_button:
-          "text-gray-700 cursor-pointer w-10 h-10 hover:bg-teal-100 rounded-full",
-        today: "bg-gray-100 font-bold text-white",
+          "hover:text-gray-700 cursor-pointer w-10 h-10 hover:bg-teal-100 rounded-full",
+        today: "bg-gray-50 font-bold text-white rounded-full",
         selected: "!bg-teal-900 text-white font-medium rounded-full",
       }}
       formatters={{
