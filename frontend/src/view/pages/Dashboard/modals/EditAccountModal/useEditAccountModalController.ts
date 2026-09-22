@@ -8,7 +8,10 @@ import toast from "react-hot-toast";
 import { currencyStringToNumber } from "../../../../../app/utils/currencyStringToNumber";
 
 const schema = z.object({
-  initialBalance: z.string().nonempty("Saldo inicial é obrigatório."),
+  initialBalance: z.union([
+    z.string().nonempty("Saldo inicial é obrigatório."),
+    z.number(),
+  ]),
   name: z.string().nonempty("Nome da conta é obrigatório."),
   type: z.enum(["CHECKING", "INVESTMENT", "CASH"]),
   color: z.string().nonempty("Cor é obrigatória."),
@@ -16,22 +19,28 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export function useNewAccountModalController() {
-  const { isNewAccountModalOpen, closeNewAccountModal } = useDashboard();
+export function useEditAccountController() {
+  const { isEditAccountModalOpen, closeEditAccountModal, accountBeingEdited } =
+    useDashboard();
 
   const {
     register,
     handleSubmit: hookFormSubmit,
     formState: { errors },
     control,
-    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      color: accountBeingEdited?.color,
+      name: accountBeingEdited?.name,
+      type: accountBeingEdited?.type,
+      initialBalance: accountBeingEdited?.initialBalance,
+    },
   });
 
   const queryClient = useQueryClient();
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: bankAccountsService.create,
+    mutationFn: bankAccountsService.update,
   });
 
   const handleSubmit = hookFormSubmit(async (data) => {
@@ -39,20 +48,20 @@ export function useNewAccountModalController() {
       await mutateAsync({
         ...data,
         initialBalance: currencyStringToNumber(data.initialBalance),
+        id: accountBeingEdited!.id,
       });
 
       queryClient.invalidateQueries({ queryKey: ["bankAccounts"] });
-      toast.success("Conta foi cadastrada com sucesso!");
-      closeNewAccountModal();
-      reset();
+      toast.success("Conta foi editada com sucesso!");
+      closeEditAccountModal();
     } catch {
-      toast.error("Erro ao cadastrar! ");
+      toast.error("Erro ao salvar as alterações! ");
     }
   });
 
   return {
-    isNewAccountModalOpen,
-    closeNewAccountModal,
+    isEditAccountModalOpen,
+    closeEditAccountModal,
     register,
     errors,
     handleSubmit,
