@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { bankAccountsService } from "../../../../../app/services/bankAccountsService";
 import toast from "react-hot-toast";
 import { currencyStringToNumber } from "../../../../../app/utils/currencyStringToNumber";
+import { useState } from "react";
 
 const schema = z.object({
   initialBalance: z.union([
@@ -38,14 +39,21 @@ export function useEditAccountController() {
     },
   });
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const queryClient = useQueryClient();
-  const { isPending, mutateAsync } = useMutation({
+  const { isPending, mutateAsync: updateAccount } = useMutation({
     mutationFn: bankAccountsService.update,
   });
 
+  const { isPending: isPendingDelete, mutateAsync: removeAccount } =
+    useMutation({
+      mutationFn: bankAccountsService.remove,
+    });
+
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await updateAccount({
         ...data,
         initialBalance: currencyStringToNumber(data.initialBalance),
         id: accountBeingEdited!.id,
@@ -59,6 +67,25 @@ export function useEditAccountController() {
     }
   });
 
+  function handleOpenDeleteModal() {
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalOpen(false);
+  }
+  async function handleRemoveAccount() {
+    try {
+      await removeAccount(accountBeingEdited!.id);
+
+      queryClient.invalidateQueries({ queryKey: ["bankAccounts"] });
+      toast.success("Conta foi deletada com sucesso!");
+      closeEditAccountModal();
+    } catch {
+      toast.error("Erro ao deletar a conta! ");
+    }
+  }
+
   return {
     isEditAccountModalOpen,
     closeEditAccountModal,
@@ -67,5 +94,10 @@ export function useEditAccountController() {
     handleSubmit,
     control,
     isPending,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleRemoveAccount,
+    isPendingDelete,
   };
 }
