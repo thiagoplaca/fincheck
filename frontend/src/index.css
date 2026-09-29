@@ -17,6 +17,7 @@ button {
 }
 
 @theme {
+  --font-sans: "DM Sans", sans-serif;
   --animate-slideDownAndFade: slideDownAndFade 400ms
     cubic-bezier(0.16, 1, 0.3, 1);
   --animate-slideUpAndFade: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
